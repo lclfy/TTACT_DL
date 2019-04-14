@@ -43,9 +43,9 @@ namespace TimeTableAutoCompleteTool
         string addedTrainText = "";
         float dpiX, dpiY;
         string developer = "反馈请联系运转车间（或技术科）\n*亦可联系黄楠/高雅雯";
-        string build = "build 01 - v190410";
+        string build = "build 01 - v190415";
         string readMe = "build01更新内容:\n"+
-            " 1、初版";
+            " 初版，使用Excel文件作为客调命令来源，可以识别普通车次和加开车次";
 
         public Main()
         {
@@ -1283,14 +1283,39 @@ namespace TimeTableAutoCompleteTool
                     int lastCell = 0;
                     for(int searchRow = 0; searchRow <= sheet.LastRowNum; searchRow++)
                     {
+                        /*
                         if(!title.Contains("京广") && !title.Contains("徐兰"))
                         {
                             break;
                         }
+                        */
                         IRow _searchRow = sheet.GetRow(searchRow);
+                        if(_searchRow == null)
+                        {
+                            sheet.CreateRow(searchRow);
+                            _searchRow = sheet.GetRow(searchRow);
+                        }
                         if(_searchRow.LastCellNum > lastCell)
                         {
-                            lastCell = _searchRow.LastCellNum;
+                            if(_searchRow.GetCell(_searchRow.LastCellNum) != null &&_searchRow.GetCell(_searchRow.LastCellNum).ToString().Trim().Length != 0)
+                            {
+                                    lastCell = _searchRow.LastCellNum;
+                            }
+                            else
+                            {//找最后一列有字的
+                                for(int reverise = _searchRow.LastCellNum; reverise > 0; reverise--)
+                                {
+                                    if (_searchRow.GetCell(reverise) != null && _searchRow.GetCell(reverise).ToString().Trim().Length != 0)
+                                    {
+                                        if(reverise > lastCell)
+                                        {
+                                            lastCell = reverise;
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+
                         }
                         for(int searchColumn = 0; searchColumn <= _searchRow.LastCellNum; searchColumn++)
                         {
@@ -1379,7 +1404,8 @@ namespace TimeTableAutoCompleteTool
                                         if (!row.GetCell(j).ToString().Contains("由") &&
                                             !row.GetCell(j).ToString().Contains("续") &&
                                             !row.GetCell(j).ToString().Contains("开行")&&
-                                            !row.GetCell(j).ToString().Contains("折"))
+                                            !row.GetCell(j).ToString().Contains("折")&&
+                                            row.GetCell(j).ToString().Length < 15)
                                         {
                                             //时刻表中车次+1
                                             allTrainsInTimeTable++;
