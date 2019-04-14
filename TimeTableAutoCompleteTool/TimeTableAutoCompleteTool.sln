@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.15
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTableAutoCompleteTool", "TimeTableAutoCompleteTool\TimeTableAutoCompleteTool.csproj", "{C390E978-B743-4A72-98D7-C97C36F2454C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BED98AA-9B8B-4768-B2B0-9CC05288BF21}"
+	ProjectSection(SolutionItems) = preProject
+		Display.cs = Display.cs
+		Display.Designer.cs = Display.Designer.cs
+		Display.resx = Display.resx
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C390E978-B743-4A72-98D7-C97C36F2454C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C390E978-B743-4A72-98D7-C97C36F2454C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C390E978-B743-4A72-98D7-C97C36F2454C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C390E978-B743-4A72-98D7-C97C36F2454C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {33CDD320-D128-44BC-B50C-CD9C5E80C4AF}
+	EndGlobalSection
+EndGlobal
