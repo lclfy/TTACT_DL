@@ -73,6 +73,7 @@
             this.contentOfDeveloper = new System.Windows.Forms.ToolTip(this.components);
             this.updateReadMe = new System.Windows.Forms.ToolTip(this.components);
             this.label2 = new System.Windows.Forms.Label();
+            this.dataAnalyse_btn = new CCWin.SkinControl.SkinButton();
             this.contextMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.rightGroupBox.SuspendLayout();
@@ -149,7 +150,7 @@
             this.outputTB.Margin = new System.Windows.Forms.Padding(6);
             this.outputTB.Name = "outputTB";
             this.outputTB.ReadOnly = true;
-            this.outputTB.Size = new System.Drawing.Size(416, 668);
+            this.outputTB.Size = new System.Drawing.Size(416, 603);
             this.outputTB.TabIndex = 9;
             this.outputTB.Text = "";
             // 
@@ -216,7 +217,7 @@
             this.searchResult_tb.Margin = new System.Windows.Forms.Padding(6);
             this.searchResult_tb.Name = "searchResult_tb";
             this.searchResult_tb.ReadOnly = true;
-            this.searchResult_tb.Size = new System.Drawing.Size(416, 668);
+            this.searchResult_tb.Size = new System.Drawing.Size(416, 603);
             this.searchResult_tb.TabIndex = 14;
             this.searchResult_tb.Text = "";
             // 
@@ -411,6 +412,7 @@
             // 
             // rightGroupBox
             // 
+            this.rightGroupBox.Controls.Add(this.dataAnalyse_btn);
             this.rightGroupBox.Controls.Add(this.search_tb);
             this.rightGroupBox.Controls.Add(this.groupBox3);
             this.rightGroupBox.Controls.Add(this.outputTB);
@@ -446,11 +448,11 @@
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Controls.Add(this.AllPsngerTrainsCountLBL);
             this.groupBox3.Controls.Add(this.AllTrainsCountLBL);
-            this.groupBox3.Location = new System.Drawing.Point(39, 744);
+            this.groupBox3.Location = new System.Drawing.Point(32, 656);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox3.Size = new System.Drawing.Size(852, 210);
+            this.groupBox3.Size = new System.Drawing.Size(852, 199);
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             // 
@@ -481,10 +483,10 @@
             // 
             this.stoppedTrainsCountLBL.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.stoppedTrainsCountLBL.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.stoppedTrainsCountLBL.Location = new System.Drawing.Point(694, 124);
+            this.stoppedTrainsCountLBL.Location = new System.Drawing.Point(694, 113);
             this.stoppedTrainsCountLBL.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.stoppedTrainsCountLBL.Name = "stoppedTrainsCountLBL";
-            this.stoppedTrainsCountLBL.Size = new System.Drawing.Size(146, 62);
+            this.stoppedTrainsCountLBL.Size = new System.Drawing.Size(146, 68);
             this.stoppedTrainsCountLBL.TabIndex = 26;
             this.stoppedTrainsCountLBL.Text = "0";
             this.stoppedTrainsCountLBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -493,7 +495,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label13.Location = new System.Drawing.Point(476, 156);
+            this.label13.Location = new System.Drawing.Point(476, 148);
             this.label13.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(224, 31);
@@ -504,7 +506,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(522, 118);
+            this.label3.Location = new System.Drawing.Point(522, 110);
             this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(134, 31);
@@ -515,18 +517,19 @@
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label15.Location = new System.Drawing.Point(82, 124);
+            this.label15.Location = new System.Drawing.Point(82, 116);
             this.label15.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(182, 31);
             this.label15.TabIndex = 21;
             this.label15.Text = "匹配旅客列车数";
+            this.label15.Click += new System.EventHandler(this.label15_Click);
             // 
             // label16
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label16.Location = new System.Drawing.Point(76, 158);
+            this.label16.Location = new System.Drawing.Point(76, 150);
             this.label16.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(198, 31);
@@ -551,10 +554,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AllPsngerTrainsCountLBL.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.AllPsngerTrainsCountLBL.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.AllPsngerTrainsCountLBL.Location = new System.Drawing.Point(282, 118);
+            this.AllPsngerTrainsCountLBL.Location = new System.Drawing.Point(280, 107);
             this.AllPsngerTrainsCountLBL.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.AllPsngerTrainsCountLBL.Name = "AllPsngerTrainsCountLBL";
-            this.AllPsngerTrainsCountLBL.Size = new System.Drawing.Size(150, 74);
+            this.AllPsngerTrainsCountLBL.Size = new System.Drawing.Size(150, 81);
             this.AllPsngerTrainsCountLBL.TabIndex = 22;
             this.AllPsngerTrainsCountLBL.Text = "0";
             this.AllPsngerTrainsCountLBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -563,7 +566,7 @@
             // 
             this.AllTrainsCountLBL.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.AllTrainsCountLBL.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.AllTrainsCountLBL.Location = new System.Drawing.Point(690, 34);
+            this.AllTrainsCountLBL.Location = new System.Drawing.Point(690, 36);
             this.AllTrainsCountLBL.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.AllTrainsCountLBL.Name = "AllTrainsCountLBL";
             this.AllTrainsCountLBL.Size = new System.Drawing.Size(150, 62);
@@ -582,6 +585,26 @@
             this.label2.Size = new System.Drawing.Size(350, 31);
             this.label2.TabIndex = 27;
             this.label2.Text = "鼠标移动至版本号查看更新内容";
+            // 
+            // dataAnalyse_btn
+            // 
+            this.dataAnalyse_btn.BackColor = System.Drawing.Color.Transparent;
+            this.dataAnalyse_btn.BaseColor = System.Drawing.Color.DeepPink;
+            this.dataAnalyse_btn.BorderColor = System.Drawing.Color.DeepPink;
+            this.dataAnalyse_btn.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.dataAnalyse_btn.DownBack = null;
+            this.dataAnalyse_btn.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataAnalyse_btn.ForeColor = System.Drawing.Color.White;
+            this.dataAnalyse_btn.Location = new System.Drawing.Point(32, 869);
+            this.dataAnalyse_btn.Margin = new System.Windows.Forms.Padding(6);
+            this.dataAnalyse_btn.MouseBack = null;
+            this.dataAnalyse_btn.Name = "dataAnalyse_btn";
+            this.dataAnalyse_btn.NormlBack = null;
+            this.dataAnalyse_btn.Size = new System.Drawing.Size(852, 86);
+            this.dataAnalyse_btn.TabIndex = 34;
+            this.dataAnalyse_btn.Text = "统计数据";
+            this.dataAnalyse_btn.UseVisualStyleBackColor = false;
+            this.dataAnalyse_btn.Click += new System.EventHandler(this.dataAnalyse_btn_Click);
             // 
             // Main
             // 
@@ -662,6 +685,7 @@
         private CCWin.SkinControl.SkinButton importCommand_btn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label5;
+        private CCWin.SkinControl.SkinButton dataAnalyse_btn;
     }
 }
 

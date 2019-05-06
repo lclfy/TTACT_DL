@@ -197,3 +197,4 @@ D:\时刻表工具\Code\TimeTableAutoCompleteTool\obj\Debug\TimeTableAutoComplet
 \\Mac\Home\Documents\GitHub\TTACT_DL\TimeTableAutoCompleteTool\TimeTableAutoCompleteTool\obj\Debug\TimeTableAutoCompleteTool.csproj.CopyComplete
 \\Mac\Home\Documents\GitHub\TTACT_DL\TimeTableAutoCompleteTool\TimeTableAutoCompleteTool\obj\Debug\TimeTableAutoCompleteTool.exe
 \\Mac\Home\Documents\GitHub\TTACT_DL\TimeTableAutoCompleteTool\TimeTableAutoCompleteTool\obj\Debug\TimeTableAutoCompleteTool.pdb
+\\Mac\Home\Documents\GitHub\TTACT_DL\TimeTableAutoCompleteTool\TimeTableAutoCompleteTool\obj\Debug\TimeTableAutoCompleteTool.DataAnalyse.resources
