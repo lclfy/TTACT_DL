@@ -224,6 +224,7 @@
             this.search_tb.Name = "search_tb";
             this.search_tb.Size = new System.Drawing.Size(262, 35);
             this.search_tb.TabIndex = 34;
+            this.search_tb.TextChanged += new System.EventHandler(this.search_tb_TextChanged);
             // 
             // secondListTitle_lbl
             // 

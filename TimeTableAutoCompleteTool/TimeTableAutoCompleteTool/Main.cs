@@ -201,6 +201,7 @@ namespace TimeTableAutoCompleteTool
                     FontSize_tb.Text = "12";
                 }
                 updateTimeTable();
+                startDataAnalyse();
             }
             else
             {
@@ -1218,9 +1219,9 @@ namespace TimeTableAutoCompleteTool
 
                     //表格样式
                     ICellStyle stoppedTrainStyle = workbook.CreateCellStyle();
-                    stoppedTrainStyle.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.Red.Index;
+                    stoppedTrainStyle.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.DarkRed.Index;
                     stoppedTrainStyle.FillPattern = FillPattern.SolidForeground;
-                    stoppedTrainStyle.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.Red.Index;
+                    stoppedTrainStyle.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.DarkRed.Index;
                     stoppedTrainStyle.BorderLeft = NPOI.SS.UserModel.BorderStyle.Thin;
                     stoppedTrainStyle.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
                     stoppedTrainStyle.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
@@ -1651,7 +1652,6 @@ namespace TimeTableAutoCompleteTool
                             }
                         }
                     }
-                    startDataAnalyse();
                     /*重新修改文件指定单元格样式*/
                     FileStream fs1 = File.OpenWrite(fileName);
                     workbook.Write(fs1);

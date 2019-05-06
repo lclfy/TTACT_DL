@@ -29,8 +29,6 @@ namespace TimeTableAutoCompleteTool
 
         private void init()
         {
-            search_tb.Visible = false;
-            secondListTitle_lbl.Visible = false;
             up_cb.Checked = true;
             down_cb.Checked = true;
             psngerTrain_cb.Checked = true;
@@ -41,10 +39,105 @@ namespace TimeTableAutoCompleteTool
 
             AllTrainsInCommand_lbl.Text = allCommandModels.Count.ToString();
 
-            refreshList(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
+            getSelectedTrains(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
         }
 
-        private void refreshList(bool up,bool down,bool psnger,bool nonPsnger,bool hasChecked,bool nonChecked)
+        private void RefreshList(List<CommandModel> _tempCM)
+        {
+            currentShow_lbl.Text = _tempCM.Count.ToString();
+            data_lv.Items.Clear();
+            data_lv.BeginUpdate();
+            for (int j = 0; j < _tempCM.Count; j++)
+            {
+                ListViewItem _lvi;
+                if (_tempCM[j].trainIndex != null && _tempCM[j].trainIndex.Length != 0)
+                {
+                    _lvi = new ListViewItem(_tempCM[j].trainIndex);
+                }
+                else
+                {
+                    _lvi = new ListViewItem("—");
+                }
+                if (_tempCM[j].MatchedWithTimeTable)
+                {
+                    _lvi.SubItems.Add("√是");
+                }
+                else
+                {
+                    _lvi.SubItems.Add("×否");
+                }
+                if (_tempCM[j].trainNumber != null && _tempCM[j].trainNumber.Length != 0)
+                {
+                    _lvi.SubItems.Add(_tempCM[j].trainNumber);
+                }
+                else
+                {
+                    _lvi.SubItems.Add("—");
+                }
+
+                if (_tempCM[j].secondTrainNumber != null && _tempCM[j].secondTrainNumber.Length != 0)
+                {
+                    if (_tempCM[j].secondTrainNumber.Trim().Contains("null"))
+                    {
+                        _lvi.SubItems.Add("无");
+                    }
+                    else
+                    {
+                        _lvi.SubItems.Add(_tempCM[j].secondTrainNumber);
+                    }
+                }
+                else
+                {
+                    _lvi.SubItems.Add(" ");
+                }
+
+                if (_tempCM[j].upOrDown == 0)
+                {
+                    _lvi.SubItems.Add("上行");
+                }
+                else if (_tempCM[j].upOrDown == 1)
+                {
+                    _lvi.SubItems.Add("下行");
+                }
+                else
+                {
+                    _lvi.SubItems.Add(" ");
+                }
+
+                if (_tempCM[j].psngerTrain)
+                {
+                    _lvi.SubItems.Add("载客");
+                }
+                else
+                {
+                    _lvi.SubItems.Add("其他");
+                }
+
+                if (_tempCM[j].trainModel != null && _tempCM[j].trainModel.Length != 0)
+                {
+                    _lvi.SubItems.Add(_tempCM[j].trainModel);
+                }
+                else
+                {
+                    _lvi.SubItems.Add(" ");
+                }
+
+                if (_tempCM[j].trainId != null && _tempCM[j].trainId.Length != 0)
+                {
+                    _lvi.SubItems.Add(_tempCM[j].trainId);
+                }
+                else
+                {
+                    _lvi.SubItems.Add(" ");
+                }
+
+                data_lv.Items.Add(_lvi);
+
+            }
+            data_lv.EndUpdate();
+        }
+
+        private void getSelectedTrains(bool up,bool down,bool psnger,bool nonPsnger,bool hasChecked,bool nonChecked)
         {
             List<CommandModel> _tempCM = new List<CommandModel>();
             //条件筛选
@@ -94,127 +187,64 @@ namespace TimeTableAutoCompleteTool
                 }
 
             }
-            currentShow_lbl.Text = _tempCM.Count.ToString();
-            data_lv.Items.Clear();
-            data_lv.BeginUpdate();
-            for (int j = 0; j < _tempCM.Count; j++)
+            RefreshList(_tempCM);
+
+        }
+
+        private void searchList(string text)
+        {
+            List<CommandModel> _tempCM = new List<CommandModel>();
+            for (int i = 0; i < allCommandModels.Count; i++)
             {
-                ListViewItem _lvi;
-                if(_tempCM[j].trainIndex != null && _tempCM[j].trainIndex.Length != 0)
+                if(allCommandModels[i].trainNumber.Contains(text) ||
+                    allCommandModels[i].secondTrainNumber.Contains(text))
                 {
-                    _lvi = new ListViewItem(_tempCM[j].trainIndex);
+                    _tempCM.Add(allCommandModels[i]);
                 }
-                else
-                {
-                    _lvi = new ListViewItem("—");
-                }
-                if (_tempCM[j].MatchedWithTimeTable)
-                {
-                    _lvi.SubItems.Add("√是");
-                }
-                else
-                {
-                    _lvi.SubItems.Add("×否");
-                }
-                if (_tempCM[j].trainNumber != null && _tempCM[j].trainNumber.Length != 0)
-                {
-                    _lvi.SubItems.Add(_tempCM[j].trainNumber);
-                }
-                else
-                {
-                    _lvi.SubItems.Add("—");
-                }
-
-                if (_tempCM[j].secondTrainNumber != null && _tempCM[j].secondTrainNumber.Length != 0)
-                {
-                    if (_tempCM[j].secondTrainNumber.Trim().Contains("null"))
-                    {
-                        _lvi.SubItems.Add("无");
-                    }
-                    else
-                    {
-                        _lvi.SubItems.Add(_tempCM[j].secondTrainNumber);
-                    }
-                }
-                else
-                {
-                    _lvi.SubItems.Add(" ");
-                }
-
-                if(_tempCM[j].upOrDown == 0)
-                {
-                    _lvi.SubItems.Add("上行");
-                }
-                else if(_tempCM[j].upOrDown == 1)
-                {
-                    _lvi.SubItems.Add("下行");
-                }
-                else
-                {
-                    _lvi.SubItems.Add(" ");
-                }
-
-                if (_tempCM[j].psngerTrain)
-                {
-                    _lvi.SubItems.Add("载客");
-                }
-                else
-                {
-                    _lvi.SubItems.Add("其他");
-                }
-
-                if (_tempCM[j].trainModel != null && _tempCM[j].trainModel.Length != 0)
-                {
-                    _lvi.SubItems.Add(_tempCM[j].trainModel);
-                }
-                else
-                {
-                    _lvi.SubItems.Add(" ");
-                }
-
-                if (_tempCM[j].trainId != null && _tempCM[j].trainId.Length != 0)
-                {
-                    _lvi.SubItems.Add(_tempCM[j].trainId);
-                }
-                else
-                {
-                    _lvi.SubItems.Add(" ");
-                }
-
-                data_lv.Items.Add(_lvi);
-
             }
-            data_lv.EndUpdate();
+            RefreshList(_tempCM);
         }
 
         private void up_cb_CheckedChanged(object sender, EventArgs e)
         {
-            refreshList(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
+            getSelectedTrains(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
         }
 
         private void down_cb_CheckedChanged(object sender, EventArgs e)
         {
-            refreshList(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
+            getSelectedTrains(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
         }
 
         private void psngerTrain_cb_CheckedChanged(object sender, EventArgs e)
         {
-            refreshList(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
+            getSelectedTrains(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
         }
 
         private void nonPsngerTrain_cb_CheckedChanged(object sender, EventArgs e)
         {
-            refreshList(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
+            getSelectedTrains(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
         }
 
         private void checked_cb_CheckedChanged(object sender, EventArgs e)
         {
-            refreshList(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
+            getSelectedTrains(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
         }
 
         private void nonChecked_cb_CheckedChanged(object sender, EventArgs e)
         {
-            refreshList(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
+            getSelectedTrains(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
+        }
+
+        private void search_tb_TextChanged(object sender, EventArgs e)
+        {
+            if(search_tb.Text.ToString().Length != 0)
+            {
+                searchList(search_tb.Text.ToString());
+            }
+            else
+            {
+                getSelectedTrains(up_cb.Checked, down_cb.Checked, psngerTrain_cb.Checked, nonPsngerTrain_cb.Checked, checked_cb.Checked, nonChecked_cb.Checked);
+            }
         }
     }
 }
