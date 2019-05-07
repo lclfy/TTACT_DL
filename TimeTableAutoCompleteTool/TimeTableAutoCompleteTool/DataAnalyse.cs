@@ -115,6 +115,10 @@ namespace TimeTableAutoCompleteTool
 
                 if (_tempCM[j].trainModel != null && _tempCM[j].trainModel.Length != 0)
                 {
+                    if (_tempCM[j].trainModel.Contains("null"))
+                    {
+                        _lvi.SubItems.Add("未配置");
+                    }
                     _lvi.SubItems.Add(_tempCM[j].trainModel);
                 }
                 else

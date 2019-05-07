@@ -249,6 +249,8 @@
             this._trainModel,
             this._trainID});
             this.data_lv.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.data_lv.FullRowSelect = true;
+            this.data_lv.GridLines = true;
             this.data_lv.Location = new System.Drawing.Point(72, 160);
             this.data_lv.Name = "data_lv";
             this.data_lv.Size = new System.Drawing.Size(1083, 622);
@@ -267,26 +269,32 @@
             // trainNumber
             // 
             this.trainNumber.Text = "车次";
+            this.trainNumber.Width = 80;
             // 
             // secondTrainNumber
             // 
             this.secondTrainNumber.Text = "车次(2)";
+            this.secondTrainNumber.Width = 80;
             // 
             // _upOrDown
             // 
             this._upOrDown.Text = "上下行";
+            this._upOrDown.Width = 70;
             // 
             // _trainType
             // 
             this._trainType.Text = "类型";
+            this._trainType.Width = 80;
             // 
             // _trainModel
             // 
             this._trainModel.Text = "车型";
+            this._trainModel.Width = 80;
             // 
             // _trainID
             // 
             this._trainID.Text = "车号";
+            this._trainID.Width = 100;
             // 
             // DataAnalyse
             // 

@@ -28,6 +28,7 @@ namespace TimeTableAutoCompleteTool
         private Boolean hasFilePath = false;
         private List<CommandModel> commandModel;
         private List<CommandModel> detectedCModel;
+        private int fileCount = 0;
         List<string> ExcelFile = new List<string>();
         //命令excel
         string cmdExcelFile = "";
@@ -194,6 +195,7 @@ namespace TimeTableAutoCompleteTool
 
         private void start_Btn_Click(object sender, EventArgs e)
         {
+            fileCount = 0;
             if (commandModel.Count != 0)
             {
                 if (FontSize_tb.Text.Length == 0)
@@ -201,7 +203,6 @@ namespace TimeTableAutoCompleteTool
                     FontSize_tb.Text = "12";
                 }
                 updateTimeTable();
-                startDataAnalyse();
             }
             else
             {
@@ -212,93 +213,101 @@ namespace TimeTableAutoCompleteTool
         //从excel中获取命令
         private void getCommand()
         {
-            if (cmdExcelFile == null)
+            try
             {
-                MessageBox.Show("请重新选择日计划命令文件", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            if (cmdExcelFile.Length == 0)
-            {
-                MessageBox.Show("请重新选择日计划命令文件", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-
-            string fileName = "";
-            fileName = cmdExcelFile;
-            IWorkbook workbook = null;  //新建IWorkbook对象  
-            if (fileName.IndexOf(".xls") > 0) // 2003版本  
-            {
-                FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-                try
+                if (cmdExcelFile == null)
                 {
-                    workbook = new HSSFWorkbook(fileStream);  //xls数据读入workbook  
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show("命令文件出现损坏（或文件无效）\n错误内容：" + e.ToString().Split('在')[0], "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show("请重新选择日计划命令文件", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
-            }
-            ISheet sheet1 = workbook.GetSheetAt(0);
-            int counter = 0;
-            string commandText = "";
-            for (int i = 0; i <= sheet1.LastRowNum; i++)
-            {
-                IRow currentRow = sheet1.GetRow(i);
-                if(currentRow != null)
+                if (cmdExcelFile.Length == 0)
                 {
-                    for(int j = 0; j <= currentRow.LastCellNum; j++)
+                    MessageBox.Show("请重新选择日计划命令文件", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                string fileName = "";
+                fileName = cmdExcelFile;
+                IWorkbook workbook = null;  //新建IWorkbook对象  
+                if (fileName.IndexOf(".xls") > 0) // 2003版本  
+                {
+                    FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+                    try
                     {
-                        if(currentRow.GetCell(j) != null)
+                        workbook = new HSSFWorkbook(fileStream);  //xls数据读入workbook  
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("命令文件出现损坏（或文件无效）\n错误内容：" + e.ToString().Split('在')[0], "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+                ISheet sheet1 = workbook.GetSheetAt(0);
+                int counter = 0;
+                string commandText = "";
+                for (int i = 0; i <= sheet1.LastRowNum; i++)
+                {
+                    IRow currentRow = sheet1.GetRow(i);
+                    if (currentRow != null)
+                    {
+                        for (int j = 0; j <= currentRow.LastCellNum; j++)
                         {
-                            ICell currentCell = currentRow.GetCell(j);
-                            if(currentCell.ToString().Length != 0)
-                                if(currentCell.ToString().Contains("CRH") ||
-                                    currentCell.ToString().Contains("CR")||
-                                    currentCell.ToString().Contains("车体"))
-                                {
-                                    commandText = commandText + currentCell.ToString().Replace("\nCR", "。\n，CR").Replace("\n车体未配置", "。\n，CR未配置").Replace("车体未配置", "，CR未配置");
-                                }
+                            if (currentRow.GetCell(j) != null)
+                            {
+                                ICell currentCell = currentRow.GetCell(j);
+                                if (currentCell.ToString().Length != 0)
+                                    if (currentCell.ToString().Contains("CRH") ||
+                                        currentCell.ToString().Contains("CR") ||
+                                        currentCell.ToString().Contains("车体"))
+                                    {
+                                        commandText = commandText + currentCell.ToString().Replace("\nCR", "。\n，CR").Replace("\n车体未配置", "。\n，CR未配置").Replace("车体未配置", "，CR未配置");
+                                    }
+                            }
                         }
                     }
                 }
-            }
-            //加行数和CRH的杠,先加条目数
-            //commandText = commandText.Replace(" ", "-");
-            int index = 0;
-            index = commandText.IndexOf("，CR");
-            string addedText = "";
-            string leftText = "";
-            int startPos = index;
-            int nextIndex = 0;
-            if(index == -1)
-            {
-                MessageBox.Show("未找到任何车次信息，请确认是否选择了正确的调令文件", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            addedText = commandText.Substring(0, index);
-            leftText = commandText.Substring(index, commandText.Length - index);
-            while (nextIndex != -1)
-            {
+                //加行数和CRH的杠,先加条目数
+                //commandText = commandText.Replace(" ", "-");
+                int index = 0;
+                index = commandText.IndexOf("，CR");
+                string addedText = "";
+                string leftText = "";
+                int startPos = index;
+                int nextIndex = 0;
                 if (index == -1)
                 {
-                    break;
+                    MessageBox.Show("未找到任何车次信息，请确认是否选择了正确的调令文件", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
                 }
-                addedText = addedText + leftText.Substring(0, nextIndex);
-                leftText = leftText.Substring(nextIndex, leftText.Length - nextIndex);
-                //leftText = commandText.Substring(index, commandText.Length - index + "、CR".Length);
-                //循环从这里开始
-                counter++;
-                leftText = counter.ToString() + leftText;
-                //查找位置后移
-                nextIndex = leftText.IndexOf("，CR", (counter - 1).ToString().Length + "，CR".Length);
-                //nextIndex = leftText.Substring((counter - 1).ToString().Length + "、CR".Length, leftText.Length).IndexOf("、CR");
+                addedText = commandText.Substring(0, index);
+                leftText = commandText.Substring(index, commandText.Length - index);
+                while (nextIndex != -1)
+                {
+                    if (index == -1)
+                    {
+                        break;
+                    }
+                    addedText = addedText + leftText.Substring(0, nextIndex);
+                    leftText = leftText.Substring(nextIndex, leftText.Length - nextIndex);
+                    //leftText = commandText.Substring(index, commandText.Length - index + "、CR".Length);
+                    //循环从这里开始
+                    counter++;
+                    leftText = counter.ToString() + leftText;
+                    //查找位置后移
+                    nextIndex = leftText.IndexOf("，CR", (counter - 1).ToString().Length + "，CR".Length);
+                    //nextIndex = leftText.Substring((counter - 1).ToString().Length + "、CR".Length, leftText.Length).IndexOf("、CR");
 
-                index = nextIndex;
+                    index = nextIndex;
 
+                }
+                addedText = addedText.Replace(" ", "-").Replace("CR未配置", "null-null") + leftText;
+                command_rTb.Text = addedText;
             }
-            addedText = addedText.Replace(" ", "-").Replace("CR未配置", "null-null") + leftText;
-            command_rTb.Text = addedText;
+            catch (Exception e)
+            {
+                MessageBox.Show("运行出现错误，请重试，若持续错误请联系大连站技术科。\n" + e.ToString().Split('。')[0], "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+           
         }
 
         private void analyseCommand(bool isYesterday = false, string detectedTrainRow = "")
@@ -328,7 +337,7 @@ namespace TimeTableAutoCompleteTool
                 addedTrainText = "";
                 for (int i = 0; i < AllCommand.Length; i++)
                 {
-                    if (AllCommand[i].Contains("站") &&
+                    if ((AllCommand[i].Contains("站") &&
                         AllCommand[i].Contains("开") && (
                         AllCommand[i].Contains("001") ||
                         AllCommand[i].Contains("002") ||
@@ -338,7 +347,13 @@ namespace TimeTableAutoCompleteTool
                         AllCommand[i].Contains("006") ||
                         AllCommand[i].Contains("007") ||
                         AllCommand[i].Contains("008") ||
-                        AllCommand[i].Contains("009")))
+                        AllCommand[i].Contains("009") ||
+                        AllCommand[i].Contains("55")))||
+                        (AllCommand[i].Contains("[") &&
+                        AllCommand[i].Contains("]") &&
+                        (AllCommand[i].Contains("检测车") ||
+                        AllCommand[i].Contains("轨道车") ||
+                        AllCommand[i].Contains("工程车"))))
                     {//加开车次，单独存储
                         string addedCommand = AllCommand[i];
                         if (addedCommand.Contains("月") && addedCommand.Contains("日"))
@@ -353,6 +368,14 @@ namespace TimeTableAutoCompleteTool
                                 addedTrainText = addedTrainText + addedTrainCount + "、" + addedCommand.Split('：')[0] + "。\n";
                             }
 
+                        }else if ((addedCommand.Contains("[") &&
+                        addedCommand.Contains("]") &&
+                        (addedCommand.Contains("检测车") ||
+                        addedCommand.Contains("轨道车") ||
+                        addedCommand.Contains("工程车"))))
+                        {
+                            addedTrainCount++;
+                            addedTrainText = addedTrainText + addedTrainCount + "、" + addedCommand + "\n";
                         }
                     }
                     //取行号，便于查找
@@ -760,6 +783,8 @@ namespace TimeTableAutoCompleteTool
             //standardCommand = Regex.Replace(standardCommand, @"\d+：\d", "");
             standardCommand = Regex.Replace(standardCommand,@"[0-9]{2}(：)[0-9]{2}","");
             standardCommand = Regex.Replace(standardCommand, @"[0-9]{1}(：)[0-9]{2}", "");
+            if (standardCommand.Contains("（/）") || standardCommand.Contains("（/现时刻）"))
+                standardCommand = standardCommand.Replace("/）", "").Replace("（/ 现时刻）","");
             if (standardCommand.Contains("1\t2"))
                 standardCommand = standardCommand.Replace("1\t2", "1、2");
             if (standardCommand.Contains("2\t2"))
@@ -851,12 +876,16 @@ namespace TimeTableAutoCompleteTool
                 standardCommand = standardCommand.Replace("；", "");
             //特殊情况添加 221、2018年02月22日，CRH380AL-2600：【0J5901-DJ5902-G6718(石家庄～北京西):停运】，0G4909-G4910-G801/4-G6611-G1559/8-G807-0G808。
             //中括号/大括号转小括号 减少后期识别代码数量
+            /*
             if (standardCommand.Contains("["))
                 standardCommand = standardCommand.Replace("[", "（");
+                */
             if (standardCommand.Contains("—"))
                 standardCommand = standardCommand.Replace("—", "-");
+            /*
             if (standardCommand.Contains("]"))
                 standardCommand = standardCommand.Replace("]", "）");
+                */
             if (standardCommand.Contains("【"))
                 standardCommand = standardCommand.Replace("【", "（");
             if (standardCommand.Contains("】"))
@@ -1219,9 +1248,9 @@ namespace TimeTableAutoCompleteTool
 
                     //表格样式
                     ICellStyle stoppedTrainStyle = workbook.CreateCellStyle();
-                    stoppedTrainStyle.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.DarkRed.Index;
+                    stoppedTrainStyle.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.Red.Index;
                     stoppedTrainStyle.FillPattern = FillPattern.SolidForeground;
-                    stoppedTrainStyle.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.DarkRed.Index;
+                    stoppedTrainStyle.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.Red.Index;
                     stoppedTrainStyle.BorderLeft = NPOI.SS.UserModel.BorderStyle.Thin;
                     stoppedTrainStyle.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
                     stoppedTrainStyle.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
@@ -1233,9 +1262,9 @@ namespace TimeTableAutoCompleteTool
                     stoppedTrainStyle.SetFont(font);
 
                     ICellStyle nonMatchedTrainStype = workbook.CreateCellStyle();
-                    nonMatchedTrainStype.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.DarkBlue.Index;
+                    nonMatchedTrainStype.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.Blue.Index;
                     nonMatchedTrainStype.FillPattern = FillPattern.SolidForeground;
-                    nonMatchedTrainStype.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.DarkBlue.Index;
+                    nonMatchedTrainStype.FillBackgroundColor = NPOI.HSSF.Util.HSSFColor.Blue.Index;
                     nonMatchedTrainStype.BorderLeft = NPOI.SS.UserModel.BorderStyle.Thin;
                     nonMatchedTrainStype.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
                     nonMatchedTrainStype.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
@@ -1651,6 +1680,11 @@ namespace TimeTableAutoCompleteTool
                                 }
                             }
                         }
+                    }
+                    fileCount++;
+                    if(fileCount == ExcelFile.Count)
+                    {
+                        startDataAnalyse();
                     }
                     /*重新修改文件指定单元格样式*/
                     FileStream fs1 = File.OpenWrite(fileName);
