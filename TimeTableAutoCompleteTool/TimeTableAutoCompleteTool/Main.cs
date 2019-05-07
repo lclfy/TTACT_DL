@@ -43,9 +43,9 @@ namespace TimeTableAutoCompleteTool
         string filePath = "";
         string addedTrainText = "";
         float dpiX, dpiY;
-        string build = "build 02 - v190505";
-        string readMe = "build02更新内容:\n"+
-            " 1、使用Excel文件作为客调命令来源，可以识别普通车次和加开车次 \n 2、增加数据统计功能";
+        string build = "build 03 - v190507";
+        string readMe = "build03更新内容:\n"+
+            " 1、使用Excel文件作为客调命令来源，可以识别普通车次和加开车次 \n 2、增加数据统计功能 \n 3、bug fixed";
 
         public Main()
         {

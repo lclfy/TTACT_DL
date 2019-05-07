@@ -261,20 +261,22 @@
             // Match
             // 
             this.Match.Text = "位于";
+            this.Match.Width = 40;
             // 
             // trainIndex
             // 
             this.trainIndex.Text = "匹配";
+            this.trainIndex.Width = 40;
             // 
             // trainNumber
             // 
             this.trainNumber.Text = "车次";
-            this.trainNumber.Width = 80;
+            this.trainNumber.Width = 70;
             // 
             // secondTrainNumber
             // 
             this.secondTrainNumber.Text = "车次(2)";
-            this.secondTrainNumber.Width = 80;
+            this.secondTrainNumber.Width = 70;
             // 
             // _upOrDown
             // 
@@ -284,17 +286,17 @@
             // _trainType
             // 
             this._trainType.Text = "类型";
-            this._trainType.Width = 80;
+            this._trainType.Width = 70;
             // 
             // _trainModel
             // 
             this._trainModel.Text = "车型";
-            this._trainModel.Width = 80;
+            this._trainModel.Width = 70;
             // 
             // _trainID
             // 
             this._trainID.Text = "车号";
-            this._trainID.Width = 100;
+            this._trainID.Width = 120;
             // 
             // DataAnalyse
             // 
